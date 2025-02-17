@@ -16,7 +16,9 @@ const Chatbot = () => {
     setInput("");
 
     try {
-      const response = await axios.post("http://localhost:8000/api/chat", {
+      const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/chat`
+
+      , {
         message: input,
         appType: appType,
       });
