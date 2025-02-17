@@ -8,8 +8,9 @@ const Chatbot = () => {
   const [appType, setAppType] = useState(null);
   const [category, setCategory] = useState("");
 
-  const backendUrl = process.env.REACT_APP_BACKEND_URL || "https://appforgeai-backend.onrender.com";
-  console.log("Backend API URL:", backendUrl);
+  const backendUrl = import.meta.env.VITE_BACKEND_URL || process.env.REACT_APP_BACKEND_URL || "https://appforgeai-backend.onrender.com";
+console.log("Backend API URL being used:", backendUrl);
+
 
   const sendMessage = async () => {
     if (!input.trim()) return;
