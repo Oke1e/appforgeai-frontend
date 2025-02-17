@@ -8,10 +8,7 @@ const Chatbot = () => {
   const [appType, setAppType] = useState(null);
   const [category, setCategory] = useState("");
 
-  // ✅ Explicitly define the backend URL
-  const backendUrl = "https://appforgeai-backend.onrender.com";
-
-
+  const backendUrl = process.env.REACT_APP_BACKEND_URL || "https://appforgeai-backend.onrender.com";
   console.log("Backend API URL:", backendUrl);
 
   const sendMessage = async () => {
@@ -23,22 +20,15 @@ const Chatbot = () => {
     setInput("");
 
     try {
-      console.log("Sending request to:", `${backendUrl}/api/chat`);
-      const response = await axios.post(
-        `${backendUrl}/api/chat`,
-        {
-          message: input,
-          appType: appType,
-          category: category,
-        },
-        {
-          headers: { "Content-Type": "application/json" }, // ✅ Ensure correct headers
-        }
-      );
-      console.log("Response from backend:", response.data);
+      const response = await axios.post(`${backendUrl}/api/chat`, {
+        message: input,
+        appType: appType,
+        category: category,
+      });
+      
       setMessages([...newMessages, { text: response.data.reply, sender: "bot" }]);
     } catch (error) {
-      console.error("Axios error:", error.response ? error.response.data : error.message);
+      console.error("Error sending message:", error);
     }
 
     setLoading(false);
@@ -46,10 +36,7 @@ const Chatbot = () => {
 
   return (
     <div className="max-w-lg mx-auto p-4 border rounded shadow-lg bg-white">
-      <p className="text-sm text-gray-600 text-center">
-  Backend URL: {backendUrl}
-</p>
-
+      <p className="text-sm text-gray-600 text-center">Backend URL: {backendUrl}</p>
       <h2 className="text-xl font-bold mb-2 text-center">AI App Generator</h2>
       <div className="mb-4">
         <label className="block text-gray-700">Choose App Category:</label>
