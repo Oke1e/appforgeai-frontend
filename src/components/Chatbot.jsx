@@ -25,6 +25,15 @@ const Chatbot = () => {
     localStorage.setItem("chatMessages", JSON.stringify(messages));
   }, [messages]);
 
+  // ✅ Clear chat history when the user starts a new session
+  useEffect(() => {
+    const clearChatOnReload = () => {
+      localStorage.removeItem("chatMessages");
+    };
+    window.addEventListener("beforeunload", clearChatOnReload);
+    return () => window.removeEventListener("beforeunload", clearChatOnReload);
+  }, []);
+
   const sendMessage = async () => {
     if (!input.trim()) return;
     setLoading(true);
