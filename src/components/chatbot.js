@@ -8,9 +8,13 @@ const Chatbot = () => {
   const [appType, setAppType] = useState(null);
   const [category, setCategory] = useState("");
 
-  const backendUrl = import.meta.env.VITE_BACKEND_URL || process.env.REACT_APP_BACKEND_URL || "https://appforgeai-backend.onrender.com";
-console.log("Backend API URL being used:", backendUrl);
+  // ✅ Explicitly define the backend URL
+  const backendUrl =
+    import.meta.env.VITE_BACKEND_URL ||
+    process.env.REACT_APP_BACKEND_URL ||
+    "https://appforgeai-backend.onrender.com";
 
+  console.log("Backend API URL:", backendUrl);
 
   const sendMessage = async () => {
     if (!input.trim()) return;
@@ -21,22 +25,23 @@ console.log("Backend API URL being used:", backendUrl);
     setInput("");
 
     try {
-      const response = await axios.post(`${backendUrl}/api/chat`, {
-        message: input,
-        appType: appType,
-        category: category,
-      }, {
-        headers: {
-          "Content-Type": "application/json",
+      console.log("Sending request to:", `${backendUrl}/api/chat`);
+      const response = await axios.post(
+        `${backendUrl}/api/chat`,
+        {
+          message: input,
+          appType: appType,
+          category: category,
+        },
+        {
+          headers: { "Content-Type": "application/json" }, // ✅ Ensure correct headers
         }
-      });
-    
+      );
+      console.log("Response from backend:", response.data);
       setMessages([...newMessages, { text: response.data.reply, sender: "bot" }]);
     } catch (error) {
-      console.error("Axios error:", error);
+      console.error("Axios error:", error.response ? error.response.data : error.message);
     }
-    
-      
 
     setLoading(false);
   };
@@ -97,6 +102,5 @@ console.log("Backend API URL being used:", backendUrl);
     </div>
   );
 };
-
 
 export default Chatbot;
