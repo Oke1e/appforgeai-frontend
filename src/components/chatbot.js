@@ -8,8 +8,9 @@ const Chatbot = () => {
   const [appType, setAppType] = useState(null);
   const [category, setCategory] = useState("");
 
-  const backendUrl = process.env.REACT_APP_BACKEND_URL || "https://appforgeai-backend.onrender.com";
-  console.log("Backend API URL:", backendUrl);
+  // 🔥 Hardcoded backend URL to ensure Vercel uses the correct one
+  const backendUrl = "https://appforgeai-backend.onrender.com";
+  console.log("🚀 Using Backend API URL:", backendUrl);
 
   const sendMessage = async () => {
     if (!input.trim()) return;
@@ -20,15 +21,22 @@ const Chatbot = () => {
     setInput("");
 
     try {
-      const response = await axios.post(`${backendUrl}/api/chat`, {
-        message: input,
-        appType: appType,
-        category: category,
-      });
-      
+      console.log("📡 Sending request to:", `${backendUrl}/api/chat`);
+      const response = await axios.post(
+        `${backendUrl}/api/chat`,
+        {
+          message: input,
+          appType: appType,
+          category: category,
+        },
+        {
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+      console.log("✅ Response from backend:", response.data);
       setMessages([...newMessages, { text: response.data.reply, sender: "bot" }]);
     } catch (error) {
-      console.error("Error sending message:", error);
+      console.error("❌ Axios error:", error);
     }
 
     setLoading(false);
