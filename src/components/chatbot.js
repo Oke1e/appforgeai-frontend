@@ -24,12 +24,18 @@ const Chatbot = () => {
         message: input,
         appType: appType,
         category: category,
+      }, {
+        headers: {
+          "Content-Type": "application/json",
+        }
       });
-      
+    
       setMessages([...newMessages, { text: response.data.reply, sender: "bot" }]);
     } catch (error) {
-      console.error("Error sending message:", error);
+      console.error("Axios error:", error);
     }
+    
+      
 
     setLoading(false);
   };
@@ -90,5 +96,6 @@ const Chatbot = () => {
     </div>
   );
 };
+
 
 export default Chatbot;
