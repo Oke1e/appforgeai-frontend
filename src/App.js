@@ -15,21 +15,21 @@ const Chatbot = () => {
     setMessages(newMessages);
     setInput("");
 
-    console.log("Backend API URL:", process.env.REACT_APP_BACKEND_URL);
-
+    const backendUrl = process.env.REACT_APP_BACKEND_URL || "https://appforgeai-backend.onrender.com";
+    console.log("Calling backend API:", backendUrl);
 
     try {
-      const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/chat`
-
-      , {
+      const response = await axios.post(`${backendUrl}/api/chat`, {
         message: input,
         appType: appType,
+      }, {
+        headers: { "Content-Type": "application/json" }, // ✅ Ensure correct headers
       });
-      
-      setMessages([...newMessages, { text: response.data.reply, sender: "bot" }]);
+      console.log("Response from backend:", response.data);
     } catch (error) {
-      console.error("Error sending message:", error);
+      console.error("Axios error:", error.response ? error.response.data : error.message);
     }
+
 
     setLoading(false);
   };
