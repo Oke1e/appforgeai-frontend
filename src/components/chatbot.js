@@ -9,10 +9,8 @@ const Chatbot = () => {
   const [category, setCategory] = useState("");
 
   // ✅ Explicitly define the backend URL
-  const backendUrl =
-    import.meta.env.VITE_BACKEND_URL ||
-    process.env.REACT_APP_BACKEND_URL ||
-    "https://appforgeai-backend.onrender.com";
+  const backendUrl = "https://appforgeai-backend.onrender.com";
+
 
   console.log("Backend API URL:", backendUrl);
 
@@ -48,6 +46,10 @@ const Chatbot = () => {
 
   return (
     <div className="max-w-lg mx-auto p-4 border rounded shadow-lg bg-white">
+      <p className="text-sm text-gray-600 text-center">
+  Backend URL: {backendUrl}
+</p>
+
       <h2 className="text-xl font-bold mb-2 text-center">AI App Generator</h2>
       <div className="mb-4">
         <label className="block text-gray-700">Choose App Category:</label>
