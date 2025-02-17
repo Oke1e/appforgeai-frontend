@@ -8,6 +8,10 @@ const Chatbot = () => {
   const [appType, setAppType] = useState(null);
   const [category, setCategory] = useState("");
 
+  // 🔥 Hardcoded backend URL to ensure Vercel uses the correct one
+  const backendUrl = "https://appforgeai-backend.onrender.com";
+  console.log("🚀 Using Backend API URL:", backendUrl);
+
   const sendMessage = async () => {
     if (!input.trim()) return;
     setLoading(true);
@@ -17,15 +21,22 @@ const Chatbot = () => {
     setInput("");
 
     try {
-      const response = await axios.post("http://localhost:8000/api/chat", {
-        message: input,
-        appType: appType,
-        category: category,
-      });
-      
+      console.log("📡 Sending request to:", `${backendUrl}/api/chat`);
+      const response = await axios.post(
+        `${backendUrl}/api/chat`,
+        {
+          message: input,
+          appType: appType,
+          category: category,
+        },
+        {
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+      console.log("✅ Response from backend:", response.data);
       setMessages([...newMessages, { text: response.data.reply, sender: "bot" }]);
     } catch (error) {
-      console.error("Error sending message:", error);
+      console.error("❌ Axios error:", error);
     }
 
     setLoading(false);
@@ -33,6 +44,7 @@ const Chatbot = () => {
 
   return (
     <div className="max-w-lg mx-auto p-4 border rounded shadow-lg bg-white">
+      <p className="text-sm text-gray-600 text-center">Backend URL: {backendUrl}</p>
       <h2 className="text-xl font-bold mb-2 text-center">AI App Generator</h2>
       <div className="mb-4">
         <label className="block text-gray-700">Choose App Category:</label>
