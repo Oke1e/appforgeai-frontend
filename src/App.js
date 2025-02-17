@@ -5,7 +5,7 @@ const Chatbot = () => {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
-  const [appType, setAppType] = useState(null);
+  const [appType, setAppType] = useState("");
 
   const sendMessage = async () => {
     if (!input.trim()) return;
@@ -14,6 +14,9 @@ const Chatbot = () => {
     const newMessages = [...messages, { text: input, sender: "user" }];
     setMessages(newMessages);
     setInput("");
+
+    console.log("Backend API URL:", process.env.REACT_APP_BACKEND_URL);
+
 
     try {
       const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/chat`
@@ -39,12 +42,13 @@ const Chatbot = () => {
         <select
           className="w-full p-2 border rounded mt-2"
           onChange={(e) => setAppType(e.target.value)}
-          value={appType}
+          value={appType || ""}  // ✅ Fallback to empty string if null
         >
           <option value="">Select an app type</option>
           <option value="html-css-js">Basic HTML/CSS/JS</option>
           <option value="react-fastapi">React + FastAPI</option>
         </select>
+
       </div>
       <div className="h-96 overflow-y-auto border p-2 bg-gray-50">
         {messages.map((msg, index) => (
