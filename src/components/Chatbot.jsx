@@ -92,6 +92,7 @@ const Chatbot = () => {
             {msg.text}
           </div>
         ))}
+        {loading && <p className="text-gray-500 text-center mt-2">Generating App...</p>}
       </div>
       <div className="mt-4 flex">
         <input
@@ -100,13 +101,14 @@ const Chatbot = () => {
           value={input}
           onChange={(e) => setInput(e.target.value)}
           placeholder="Type your app idea..."
+          disabled={loading}
         />
         <button
           onClick={sendMessage}
           disabled={loading || !appType}
           className="ml-2 p-2 bg-blue-500 text-white rounded hover:bg-blue-600"
         >
-          {loading ? "Thinking..." : "Send"}
+          {loading ? "Generating..." : "Send"}
         </button>
       </div>
     </div>
