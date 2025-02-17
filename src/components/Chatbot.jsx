@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 const Chatbot = () => {
@@ -11,6 +11,19 @@ const Chatbot = () => {
   // 🔥 Hardcoded backend URL to ensure Vercel uses the correct one
   const backendUrl = "https://appforgeai-backend.onrender.com";
   console.log("🚀 Using Backend API URL:", backendUrl);
+
+  // ✅ Load chat history from local storage
+  useEffect(() => {
+    const storedMessages = localStorage.getItem("chatMessages");
+    if (storedMessages) {
+      setMessages(JSON.parse(storedMessages));
+    }
+  }, []);
+
+  // ✅ Save chat history to local storage
+  useEffect(() => {
+    localStorage.setItem("chatMessages", JSON.stringify(messages));
+  }, [messages]);
 
   const sendMessage = async () => {
     if (!input.trim()) return;
